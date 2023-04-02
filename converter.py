@@ -34,14 +34,15 @@ class Converter:
         )
         return FILE
 
-    async def stop(self, _: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    async def stop(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             os.remove(os.path.join(self.temp_path, self.filename))
         except:
             pass
         logger.warning(context.error)
+        await update.message.reply_text('Conversation ended. Please, try to start with /convert again')
 
-        return END
+        return ConversationHandler.END
 
     async def get_file(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         file = await context.bot.getFile(update.message.document)
@@ -118,7 +119,7 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().token("6268121226:AAHc70bDIUUj9c0FyW6SpabVsHUqCvuzhus").build()
-    converter = Converter('C:/Users/julyk/PycharmProjects/pythonProject/temp/')
+    converter = Converter('./temp/')
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("convert", converter.start)],
@@ -126,7 +127,8 @@ def main() -> None:
             FILE: [MessageHandler(filters.ALL, converter.get_file)],
             NICKNAME: [MessageHandler(filters.ALL, converter.convert)],
         },
-        fallbacks=[CommandHandler("stop", converter.stop)],
+        fallbacks=[MessageHandler(filters.ALL, converter.stop)],
+        allow_reentry=True,
     )
 
     application.add_handler(conv_handler)
