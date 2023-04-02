@@ -48,7 +48,7 @@ class Converter:
         file = await context.bot.getFile(update.message.document)
         self.filename = update.message.document.file_name
         with open(os.path.join(self.temp_path, self.filename), 'w+') as f:
-            await file.download(out=f)
+            await file.download_to_memory(out=f)
 
         await update.message.reply_text(
             "Enter your nickname",
