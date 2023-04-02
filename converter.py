@@ -119,7 +119,7 @@ def main() -> None:
     """Run the bot."""
     # Create the Application and pass it your bot's token.
     application = Application.builder().token("6268121226:AAHc70bDIUUj9c0FyW6SpabVsHUqCvuzhus").build()
-    converter = Converter('./temp/')
+    converter = Converter('home/j-admin/TRUEBOT/converter_telegram_bot/temp/')
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("convert", converter.start)],
