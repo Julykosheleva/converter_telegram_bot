@@ -127,7 +127,7 @@ def main() -> None:
             FILE: [MessageHandler(filters.ALL, converter.get_file)],
             NICKNAME: [MessageHandler(filters.ALL, converter.convert)],
         },
-        fallbacks=[MessageHandler(filters.ALL, converter.stop)],
+        fallbacks=[],
         allow_reentry=True,
     )
 
