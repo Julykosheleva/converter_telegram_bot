@@ -127,13 +127,13 @@ def main() -> None:
             FILE: [MessageHandler(filters.ALL, converter.get_file)],
             NICKNAME: [MessageHandler(filters.ALL, converter.convert)],
         },
-        fallbacks=[],
+        fallbacks=[MessageHandler(filters.ALL, converter.stop)],
         allow_reentry=True,
     )
 
     application.add_handler(conv_handler)
     application.add_handler(CommandHandler("help", converter.help_command))
-    application.add_error_handler(converter.stop)
+    #application.add_error_handler(converter.stop)
 
     application.run_polling(timeout=1000)
 
