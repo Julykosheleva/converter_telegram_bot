@@ -4,7 +4,7 @@ COPY ./converter_telegram_bot .
 
 RUN pip install -r requirements.txt
 
-RUN sudo apt install unrar
+RUN apt install unrar
 
 EXPOSE 8888
 
