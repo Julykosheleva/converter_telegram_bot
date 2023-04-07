@@ -61,10 +61,10 @@ class Converter:
         if not os.path.exists(self.zip_temp_folder):
             pathlib.Path(self.zip_temp_folder).mkdir(parents=True, exist_ok=True)
 
-        with rarfile.RarFile(os.path.join(self.temp_path, self.filename), "w") as f:
-            f.extractall(path=self.zip_temp_folder)
+        #with rarfile.RarFile(os.path.join(self.temp_path, self.filename), "w") as f:
+        #    f.extractall(path=self.zip_temp_folder)
 
-        #extract_archive(os.path.join(self.temp_path, self.filename), outdir=f'{self.temp_path}temp_folder')
+        extract_archive(os.path.join(self.temp_path, self.filename), outdir=f'{self.temp_path}temp_folder')
 
     async def convert(self, update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
         username = update.message.text
