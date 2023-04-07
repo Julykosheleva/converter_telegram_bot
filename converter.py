@@ -14,7 +14,6 @@ from telegram.ext import (
 )
 import roman
 import zipfile
-#from unrar import rarfile
 from patoolib import extract_archive
 
 END, FILE, NICKNAME = range(-1, 2)
