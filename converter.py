@@ -40,6 +40,7 @@ class Converter:
         except:
             pass
         logger.warning(context.error)
+        logger.warning(context.error.with_traceback())
         await update.message.reply_text('Conversation ended. Please, try to start with /convert again')
 
         return ConversationHandler.END
@@ -138,7 +139,7 @@ def main() -> None:
     application.add_handler(CommandHandler("help", converter.help_command))
     application.add_error_handler(converter.stop)
 
-    application.run_polling(timeout=1000)
+    application.run_polling(timeout=3000000)
 
 
 if __name__ == '__main__':
