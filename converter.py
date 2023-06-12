@@ -19,11 +19,15 @@ from patoolib import extract_archive
 END, FILE, NICKNAME = range(-1, 2)
 logger = logging.getLogger(__name__)
 
+
 class Converter:
     def __init__(self, temp):
         self.filename = ''
         self.temp_path = temp
-        self.zip_temp_folder = f'{self.temp_path}/temp_folder'
+
+    @property
+    def zip_temp_folder(self):
+        return os.path.join(self.temp_path, f'temp_folder_{self.filename}')
 
     async def help_command(self, update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text("Use /convert to test this bot.")
@@ -40,7 +44,6 @@ class Converter:
         except:
             pass
         logger.warning(context.error)
-        logger.warning(context.error.with_traceback())
         await update.message.reply_text('Conversation ended. Please, try to start with /convert again')
 
         return ConversationHandler.END
@@ -64,9 +67,10 @@ class Converter:
         #with rarfile.RarFile(os.path.join(self.temp_path, self.filename), "w") as f:
         #    f.extractall(path=self.zip_temp_folder)
 
-        extract_archive(os.path.join(self.temp_path, self.filename), outdir=f'{self.temp_path}temp_folder')
+        extract_archive(os.path.join(self.temp_path, self.filename), outdir=self.zip_temp_folder,
+                        interactive=False)
 
-    async def convert(self, update: Update, _: ContextTypes.DEFAULT_TYPE) -> None:
+    async def convert(self, update: Update, _: ContextTypes.DEFAULT_TYPE) -> int:
         username = update.message.text
         new_filenames = []
         self.extract_rar()
@@ -92,7 +96,7 @@ class Converter:
         await update.effective_chat.send_document(document=result_filename)
         os.remove(result_filename)
 
-        return END
+        return ConversationHandler.END
 
     @staticmethod
     def gg_to_h2n(data: str, username: str) -> str:
